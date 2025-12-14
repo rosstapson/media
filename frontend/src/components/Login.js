@@ -91,9 +91,7 @@ const Login = ({ onLoginSuccess }) => {
 
         <div className="login-footer">
           <p className="demo-credentials">
-            Demo credentials:<br />
-            Email: <strong>admin@media-player.com</strong><br />
-            Password: <strong>admin123</strong>
+            Have fun.
           </p>
         </div>
       </div>
