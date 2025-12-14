@@ -1,0 +1,39 @@
+server {
+    server_name zomg-media.co.za;
+
+    # Root of your built frontend
+    root /home/ross/dev/media/frontend/build;
+    index index.html;
+
+    # ---------------------------------------
+    # Backend API proxy
+    # ---------------------------------------
+    location /api/ {
+        proxy_pass http://localhost:5000/;   # backend
+        proxy_http_version 1.1;
+
+        # Preserve client info for sessions/jwt
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        # WebSockets (if needed)
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+    }
+
+    # ---------------------------------------
+    # Serve static frontend files
+    # ---------------------------------------
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+
+    # ---------------------------------------
+    # Security headers (optional but recommended)
+    # ---------------------------------------
+    add_header X-Frame-Options "SAMEORIGIN";
+    add_header X-XSS-Protection "1; mode=block";
+    add_header X-Content-Type-Options "nosniff";
+}
